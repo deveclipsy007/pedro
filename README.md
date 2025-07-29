@@ -1,68 +1,76 @@
-# Agente Pedro - Assistente Clínico Pediátrico
+# Pipeline RAG - Projeto Completo
 
 ## 📋 Visão Geral
 
-O Agente Pedro é um assistente clínico especializado em pediatria desenvolvido com o framework Agno, integrando Retrieval-Augmented Generation (RAG) com protocolos clínicos reais da Pedlife e busca científica em PubMed. O agente está preparado para deploy no Render e integração com frontends React.
+Este projeto implementa um pipeline completo de RAG (Retrieval-Augmented Generation) seguindo as melhores práticas de desenvolvimento, com ambiente de teste e produção bem estruturados.
 
-## 🏗️ Arquitetura do Sistema
+## 🏗️ Arquitetura do Pipeline
 
 ```
-┌─────────────────┐     ┌──────────────────┐     ┌────────────────────┐
-│   PROTOCOLOS    │ →  │   PROCESSAMENTO  │ →  │   AGENTE PEDRO     │
-│   PEDLIFE       │     │   RAG SEMÂNTICO  │     │   (AGNO FRAMEWORK) │
-└─────────────────┘     └──────────────────┘     └────────────────────┘
-         │                        │                         │
-         ▼                        ▼                         ▼
-┌─────────────────┐     ┌──────────────────┐     ┌────────────────────┐
-│  VADEMECUM      │ →  │  BANCO DE DADOS  │ ← → │  API REST (FASTAPI)│
-│  PEDIÁTRICO     │     │  SEMÂNTICO       │     │  + PLAYGROUND      │
-└─────────────────┘     └──────────────────┘     └────────────────────┘
-         │                        │                         │
-         ▼                        ▼                         ▼
-┌─────────────────┐     ┌──────────────────┐     ┌────────────────────┐
-│   PUBMED        │ ← → │  BUSCA CIENTÍFICA│ ← → │  FRONTEND REACT    │
-│   INTEGRATION   │     │  EVIDÊNCIAS      │     │  (INTEGRAÇÃO)      │
-└─────────────────┘     └──────────────────┘     └────────────────────┘
+┌────────────┐     ┌───────────────┐     ┌────────────────┐
+│  EXTRAÇÃO  │ →  │ PROCESSAMENTO │ →  │ AVALIAÇÃO + CI │
+└────────────┘     └───────────────┘     └────────────────┘
 ```
 
-### Componentes Principais:
+### Fases do Pipeline:
 
-1. **Protocolos Pedlife**: 26 documentos clínicos (.md) com protocolos pediátricos reais
-2. **Processamento RAG**: Sistema semântico com chunking inteligente e busca por similaridade
-3. **Agente Pedro**: Assistente clínico especializado com 5 ferramentas integradas
-4. **API REST**: Endpoints FastAPI expostos automaticamente pelo Playground Agno
-5. **Frontend React**: Interface web para interação com o agente
+1. **Extração**: Captura documentos brutos (.md, .mdx, .json, .docx)
+2. **Processamento**: Limpa, converte e fragmenta em chunks
+3. **Avaliação & Deploy**: Testa abordagens, elege a melhor e automatiza
 
 ## 📁 Estrutura do Projeto
 
 ```
 project/
 ├── data/
-│   ├── raw/              # Protocolos Pedlife originais (.md)
-│   └── enhanced_rag.db   # Banco de dados semântico processado
-├── playground/
-│   ├── pedro_playground_medico.py  # Agente + API REST
-│   └── config.py         # Configurações do playground
-├── pedro_enhanced_search.py       # Busca semântica aprimorada
-├── pubmed_integration.py          # Integração com PubMed
-├── activate_enhanced_rag.py       # Ativação do pipeline RAG
-├── enhanced_service.py            # Serviço RAG semântico
-├── pedro_rag_wrapper.py           # Wrapper robusto para RAG
-├── requirements.txt       # Dependências do projeto
-├── render.yaml            # Configuração de deploy no Render
-├── ESSENTIAL_FILES.md     # Arquivos essenciais para produção
-├── REACT_INTEGRATION.md   # Documentação de integração React
-└── README.md              # Este arquivo
+│   ├── raw/              # Arquivos originais (.md)
+│   ├── processed/        # MD normalizado
+│   └── tests/            # Queries de teste
+├── scripts/
+│   ├── 1_extrai_dados.py
+│   ├── 2_normaliza_e_chunk.py
+│   ├── 3_gera_embeddings.py
+│   ├── 4_avalia.py
+│   └── runner.py
+├── docker/
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   └── docker-compose.prod.yml
+├── config/
+│   ├── database.py
+│   ├── settings.py
+│   └── logging.py
+├── src/
+│   ├── raglib/
+│   │   ├── __init__.py
+│   │   ├── extract.py
+│   │   ├── chunk.py
+│   │   ├── embeddings.py
+│   │   └── evaluate.py
+│   └── api/
+│       ├── main.py
+│       └── endpoints.py
+├── tests/
+│   ├── queries.yaml
+│   └── test_pipeline.py
+├── logs/
+├── .env.example
+├── .env.test
+├── .env.prod
+├── pyproject.toml
+├── requirements.txt
+├── requirements-dev.txt
+└── README.md
 ```
 
 ## 🚀 Quick Start
 
-### 1. Configuração do Ambiente
+### 1. Configuração do Ambiente de Teste
 
 ```bash
 # Clone e configure o projeto
 git clone <repo-url>
-cd pedro-agent
+cd rag-pipeline
 
 # Crie ambiente virtual
 python -m venv venv
@@ -73,172 +81,108 @@ venv\Scripts\activate     # Windows
 # Instale dependências
 pip install -r requirements.txt
 
-# Configure variáveis de ambiente (opcional)
+# Configure variáveis de ambiente
 cp .env.example .env.test
-# Edite .env.test com suas credenciais (API keys, etc)
+# Edite .env.test com suas credenciais
 ```
 
-### 2. Processar Protocolos e Ativar RAG
+### 2. Executar Pipeline Local
 
 ```bash
-# 1. Coloque os protocolos .md em data/raw/
-# 2. Ative o pipeline RAG semântico:
-python activate_enhanced_rag.py
-
-# 3. Verifique se o banco enhanced_rag.db foi criado
-ls data/enhanced_rag.db
+# 1. Coloque arquivos .md em data/raw/
+# 2. Execute scripts sequencialmente:
+poetry run python scripts/1_extrai_dados.py
+poetry run python scripts/2_normaliza_e_chunk.py
+poetry run python scripts/3_gera_embeddings.py
+poetry run python scripts/4_avalia.py
 ```
 
-### 3. Executar Agente Localmente
+### 3. Executar com Docker (Recomendado)
 
 ```bash
-# Iniciar o Playground do Agente Pedro
-python playground/pedro_playground_medico.py
+# Ambiente de teste
+docker-compose up --build
 
-# Acesse http://localhost:7778 para interface web
-# A API REST estará disponível em http://localhost:7778
+# Ambiente de produção
+docker-compose -f docker/docker-compose.prod.yml up --build
 ```
 
-### 4. Deploy no Render
+## 🔧 Configuração
 
-```bash
-# O deploy é feito automaticamente via render.yaml
-# Basta conectar o repositório ao Render
-# O endpoint público será fornecido pelo Render
+### Variáveis de Ambiente
+
+Copie `.env.example` para `.env.test` ou `.env.prod` e configure:
+
+```env
+# Database
+DATABASE_URL=postgresql://user:pass@localhost:5432/rag_db
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_KEY=your-anon-key
+
+# OpenAI
+OPENAI_API_KEY=sk-...
+
+# Pipeline
+WATCH=true
+CHUNK_SIZE=1000
+CHUNK_OVERLAP=200
+EMBEDDING_MODEL=text-embedding-3-small
 ```
 
-## 🔧 Funcionamento do Agente Pedro
+## 📊 Monitoramento
 
-### Ferramentas Integradas
+- **Logs**: Disponíveis em `/logs/{step}.jsonl`
+- **KPIs**: Latência, tokens gerados, precision@k
+- **Avaliação**: Recall@k e MRR por estratégia de chunking
 
-1. **retrieve_docs**: Busca semântica em protocolos Pedlife
-2. **calc_dose**: Calculadora posológica pediátrica
-3. **test_medical_scenarios**: Teste de cenários clínicos
-4. **clinical_alert**: Alertas clínicos baseados em protocolos
-5. **pubmed_search**: Busca científica em literatura médica
+## 🌐 Deploy em Produção
 
-### Fluxo de Processamento
+### Supabase + Render/Fly.io
 
-1. **Consulta Recebida**: Pergunta clínica via API ou interface web
-2. **Detecção Inteligente**: Identificação automática de tipo de consulta
-3. **Busca RAG**: Consulta a protocolos Pedlife via busca semântica
-4. **Processamento**: Análise e combinação de informações relevantes
-5. **Resposta Final**: Retorno com fontes, evidências e recomendações
+1. Configure Supabase com extensão pgvector
+2. Build e push da imagem Docker
+3. Configure cron jobs para execução automática
+4. Ative Row-Level Security
 
-## 🌐 Integração com Frontend React
+### Integração com Agente IA
 
-### Endpoints da API
+```python
+# Endpoint RAG
+GET /rag?question=sua_pergunta
 
-O Playground do Agno expõe automaticamente uma API REST completa:
-
-```
-# Listar agentes disponíveis
-GET /api/agents
-
-# Enviar consulta para o agente
-POST /api/agents/pedro/runs
-Content-Type: application/json
-
+# Retorna:
 {
-  "task": "Qual a dose de midazolam para sedação de criança de 15kg?"
+  "answer": "resposta contextual",
+  "sources": ["fonte1.md", "fonte2.md"],
+  "chunks": [...],
+  "metadata": {...}
 }
-
-# Status do playground
-GET /api/playground/status
-
-# Documentação interativa
-GET /docs
-GET /redoc
 ```
 
-### Exemplo de Integração React
-
-```javascript
-// Exemplo de componente React para interagir com o Pedro
-import React, { useState } from 'react';
-
-const PedroChat = () => {
-  const [message, setMessage] = useState('');
-  const [response, setResponse] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    try {
-      // Substitua pela URL do seu deploy no Render
-      const res = await fetch('https://seu-app.onrender.com/api/agents/pedro/runs', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ task: message })
-      });
-      
-      const data = await res.json();
-      setResponse(data.response || data.result);
-    } catch (error) {
-      setResponse('Erro na comunicação com o agente Pedro');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input 
-          type="text" 
-          value={message} 
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Digite sua consulta clínica..."
-          disabled={loading}
-        />
-        <button type="submit" disabled={loading}>
-          {loading ? 'Processando...' : 'Enviar'}
-        </button>
-      </form>
-      
-      {response && (
-        <div className="response">
-          <h3>Resposta do Pedro:</h3>
-          <div dangerouslySetInnerHTML={{ __html: response }} />
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default PedroChat;
-```
-
-### Considerações de Segurança
-
-1. **Sem Autenticação Padrão**: A API REST local/deploy não requer chave por padrão
-2. **Implementação de Autenticação**: Para produção, adicione middleware de autenticação
-3. **HTTPS**: Em produção, use sempre conexões HTTPS
-4. **Rate Limiting**: Implemente limites de requisições para evitar abuso
-
-## 🧪 Testes e Validação
+## 🧪 Testes
 
 ```bash
-# Testar funcionalidades do agente
-python teste_pedro_completo.py
+# Executar testes
+pytest tests/
 
-# Validar integração RAG
-python teste_rag_integration.py
-
-# Testar cálculos posológicos
-python teste_calc_dose.py
+# Avaliar estratégias de chunking
+python scripts/4_avalia.py
 ```
 
-## 📈 Monitoramento e Logs
+## 📈 Próximos Passos
 
-- **Logs do Agente**: Disponíveis no console durante execução
-- **Logs do RAG**: Registrados em `logs/rag_processing.log`
-- **Monitoramento de Erros**: Tratamento de exceções com mensagens detalhadas
-- **Performance**: Tempo de resposta registrado para otimização
+- [ ] Implementar prompts RAG especializados
+- [ ] Configurar governança e controle de acesso
+- [ ] Desenvolver UI (React + Supabase)
+- [ ] Otimizar performance e custos
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
 
 ## 📄 Licença
 
