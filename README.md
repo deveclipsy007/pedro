@@ -7,6 +7,9 @@
   <img src="https://img.shields.io/badge/Python-3.9+-yellow?style=for-the-badge" alt="Python 3.9+">
 </p>
 
+![alt text](pedro.png)
+
+
 ## 📋 Visão Geral
 
 **Pedro** é um assistente clínico pediátrico baseado em IA que combina protocolos médicos validados com busca semântica avançada e integração científica. Desenvolvido para profissionais de saúde, oferece consulta rápida a diretrizes clínicas, cálculos posológicos automáticos e acesso à literatura científica atualizada.
