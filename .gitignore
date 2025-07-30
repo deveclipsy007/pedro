@@ -58,8 +58,8 @@ cover/
 # Django stuff:
 *.log
 local_settings.py
-db.sqlite3
-db.sqlite3-journal
+# db.sqlite3  # Commented to allow RAG database
+# db.sqlite3-journal  # Commented to allow RAG database
 
 # Flask stuff:
 instance/
@@ -190,10 +190,13 @@ Thumbs.db
 *.swo
 *~
 
-# Database files
-*.db
-*.sqlite
-*.sqlite3
+# Database files (excluding RAG database)
+# *.db
+# *.sqlite
+# *.sqlite3
+
+# Allow RAG database for Pedro agent
+!data/enhanced_rag.db
 
 # Backup files
 *.bak
