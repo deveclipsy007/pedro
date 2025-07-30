@@ -703,6 +703,30 @@ def create_pedro_agent():
     
     return pedro
 
+# Variável global para o Uvicorn acessar
+playground_app = None
+
+def create_playground_app():
+    """Cria e retorna a aplicação playground para deploy"""
+    global playground_app
+    
+    if playground_app is None:
+        # Cria o agente
+        pedro_agent = create_pedro_agent()
+        
+        # Cria o playground
+        playground = Playground(agents=[pedro_agent])
+        
+        # Obtém a aplicação
+        playground_app = playground.get_app()
+        
+        print("✅ Playground app criado para deploy")
+    
+    return playground_app
+
+# Inicializa o app para deploy (Railway/Uvicorn)
+playground_app = create_playground_app()
+
 def main():
     """Função principal"""
     try:
