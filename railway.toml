@@ -11,6 +11,8 @@ restartPolicyMaxRetries = 10
 [environment]
 PORT = "8000"
 DEBUG = "false"
+ENVIRONMENT = "production"
+PYTHONPATH = "/app"
 AGENT_NAME = "Pedro"
 AGENT_ROLE = "Assistente Clínico Pediátrico"
 DATABASE_URL = "sqlite:///data/enhanced_rag.db"
