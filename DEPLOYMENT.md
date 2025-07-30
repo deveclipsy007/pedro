@@ -102,35 +102,25 @@ docker-compose -f docker/docker-compose.prod.yml logs -f
 
 ### 3. Deploy em Plataformas Cloud
 
-#### 3.1 Render.com
+#### 3.1 Railway
 
-1. **Criar render.yaml**:
-```yaml
-services:
-  - type: web
-    name: rag-pipeline
-    env: docker
-    dockerfilePath: ./docker/Dockerfile
-    envVars:
-      - key: ENVIRONMENT
-        value: production
-      - key: DATABASE_URL
-        fromDatabase:
-          name: rag-db
-          property: connectionString
-    scaling:
-      minInstances: 1
-      maxInstances: 3
+1. **Criar railway.toml**:
+```toml
+[build]
+builder = "nixpacks"
 
-databases:
-  - name: rag-db
-    databaseName: rag_prod
-    user: rag_user
+[deploy]
+healthcheckPath = "/"
+restartPolicyType = "always"
+
+[environment]
+PORT = "8000"
+DATABASE_URL = "sqlite:///data/enhanced_rag.db"
 ```
 
 2. **Deploy**:
 ```bash
-# Conecte repositório no Render
+# Conecte repositório no Railway
 # Configure variáveis de ambiente
 # Deploy automático via Git
 ```

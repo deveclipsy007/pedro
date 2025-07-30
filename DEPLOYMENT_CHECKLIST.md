@@ -1,4 +1,4 @@
-# Checklist de Deploy do Agente Pedro no Render
+# Checklist de Deploy do Agente Pedro no Railway
 
 ## 📁 Estrutura de Arquivos Essenciais
 
@@ -12,14 +12,15 @@
 - [ ] `data/enhanced_rag.db` (Banco RAG com 915 chunks)
 
 ### Configuração
-- [ ] `render.yaml` (Configuração do Render)
-- [ ] `.env.render.template` (Template de variáveis de ambiente)
+- [ ] `railway.toml` (Configuração do Railway)
+- [ ] `Procfile` (Comando de inicialização)
+- [ ] `.env.railway.template` (Template de variáveis de ambiente)
 
 ### Documentação
 - [ ] `README.md` (Instruções gerais)
 - [ ] `DEPLOYMENT.md` (Instruções específicas de deploy)
 
-## ⚙️ Configurações Necessárias no Render
+## ⚙️ Configurações Necessárias no Railway
 
 ### Variáveis de Ambiente
 - [ ] `OPENAI_API_KEY` (API Key da OpenAI)
@@ -36,7 +37,7 @@
 ## ✅ Validações Pós-Deploy
 
 ### Funcionalidades do Agente
-- [ ] Playground acessível via URL do Render
+- [ ] Playground acessível via URL do Railway
 - [ ] Agente Pedro aparece no playground
 - [ ] Todas as 5 ferramentas estão disponíveis:
   - [ ] `retrieve_docs` (Busca nos protocolos Pedlife)
@@ -62,9 +63,9 @@
 1. Testar queries clínicas reais no playground
 2. Validar cálculos de dose com diferentes medicações
 3. Verificar fallback PubMed com queries complexas
-4. Monitorar logs do Render para erros
+4. Monitorar logs do Railway para erros
 5. Configurar alertas de saúde do serviço
 
 ---
 
-📝 **Importante**: Nunca subir arquivos `.env` com segredos para o repositório. Usar sempre `.env.render.template` como referência.
+📝 **Importante**: Nunca subir arquivos `.env` com segredos para o repositório. Usar sempre `.env.railway.template` como referência.

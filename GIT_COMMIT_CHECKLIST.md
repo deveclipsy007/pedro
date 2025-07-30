@@ -1,14 +1,15 @@
 # Checklist Final de Arquivos para Commit no GitHub
 
-## 📁 Arquivos Essenciais para Deploy no Render
+## 📁 Arquivos Essenciais para Deploy no Railway
 
 ### Código e Configuração
 - [ ] `playground/pedro_playground_medico.py` (Playground principal médico)
 - [ ] `pedro_enhanced_search.py` (Busca semântica aprimorada)
 - [ ] `pubmed_integration.py` (Integração com PubMed)
 - [ ] `requirements.txt` (Dependências do projeto)
-- [ ] `render.yaml` (Configuração do Render)
-- [ ] `.env.render.template` (Template de variáveis de ambiente)
+- [ ] `railway.toml` (Configuração do Railway)
+- [ ] `Procfile` (Comando de inicialização)
+- [ ] `.env.railway.template` (Template de variáveis de ambiente)
 
 ### Banco de Dados e Dados
 - [ ] `data/enhanced_rag.db` (Banco RAG com 915 chunks semânticos)
@@ -57,8 +58,8 @@
 - [ ] Verificar integração RAG + PubMed
 
 ### Configuração
-- [ ] Revisar `render.yaml` para garantir comandos corretos
-- [ ] Verificar `.env.render.template` para variáveis essenciais
+- [ ] Revisar `railway.toml` para garantir comandos corretos
+- [ ] Verificar `.env.railway.template` para variáveis essenciais
 - [ ] Confirmar que `requirements.txt` está atualizado
 
 ### Documentação
@@ -74,8 +75,9 @@ git add playground/pedro_playground_medico.py
 git add pedro_enhanced_search.py
 git add pubmed_integration.py
 git add requirements.txt
-git add render.yaml
-git add .env.render.template
+git add railway.toml
+git add Procfile
+git add .env.railway.template
 git add data/enhanced_rag.db
 git add data/raw/
 git add README.md

@@ -729,8 +729,11 @@ def main():
         playground_app = playground.get_app()
         print("✅ Aplicação playground obtida")
         
+        # Obtém a porta da variável de ambiente ou usa porta padrão
+        port = int(os.environ.get("PORT", 7778))
+        
         print("\n🩺 PEDRO PLAYGROUND - VERSÃO MÉDICA PROFISSIONAL")
-        print("📍 URL: http://localhost:7778")
+        print(f"📍 URL: http://localhost:{port}")
         print("🎯 Público: Médicos pediatras, residentes, emergencistas")
         print("🔬 Recursos: RAG Semântico + PubMed + Protocolos Pedlife")
         print("📚 Dados: 26 Protocolos validados + Literatura científica")
@@ -738,7 +741,7 @@ def main():
         print("=" * 70)
         
         # Serve o playground
-        serve_playground_app(playground_app, host="0.0.0.0", port=7778)
+        serve_playground_app(playground_app, host="0.0.0.0", port=port)
         
     except Exception as e:
         print(f"❌ ERRO ao iniciar playground médico: {e}")

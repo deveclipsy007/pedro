@@ -1,0 +1,26 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+healthcheckPath = "/"
+healthcheckTimeout = 300
+restartPolicyType = "always"
+
+[environment]
+PORT = "8000"
+DEBUG = "false"
+AGENT_NAME = "Pedro"
+AGENT_ROLE = "Assistente Clínico Pediátrico"
+DATABASE_URL = "sqlite:///data/enhanced_rag.db"
+RAG_DATABASE_PATH = "data/enhanced_rag.db"
+RAG_CHUNK_SIZE = "1000"
+RAG_OVERLAP = "200"
+PUBMED_MAX_RESULTS = "5"
+PUBMED_DELAY = "1"
+MAX_QUERY_LENGTH = "1000"
+RATE_LIMIT_REQUESTS = "100"
+RATE_LIMIT_WINDOW = "3600"
+
+# Variáveis secretas (definir no Railway Dashboard)
+# OPENAI_API_KEY = "configurar_no_railway_dashboard"
+# PUBMED_API_KEY = "configurar_no_railway_dashboard"

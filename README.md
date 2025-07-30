@@ -113,7 +113,7 @@ venv\Scripts\activate     # Windows
 pip install -r requirements.txt
 
 # Configure variáveis de ambiente
-cp .env.render.template .env.test
+cp .env.railway.template .env.test
 # Edite .env.test com sua OPENAI_API_KEY
 ```
 
@@ -223,19 +223,28 @@ Pedro detecta automaticamente o tipo de consulta e aciona a ferramenta apropriad
 
 ## 🌐 Deploy e Produção
 
-### 🚀 Deploy no Render
+### 🚀 Deploy no Railway
 
-O projeto está configurado para deploy automático no Render:
+O projeto está configurado para deploy automático no Railway:
 
-```yaml
-# render.yaml
-services:
-  - type: web
-    name: pedro-agent
-    env: python
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn playground.pedro_playground_medico:playground_app --host 0.0.0.0 --port $PORT
+```toml
+# railway.toml
+[build]
+builder = "nixpacks"
+
+[deploy]
+healthcheckPath = "/"
+restartPolicyType = "always"
+
+[environment]
+PORT = "8000"
+DATABASE_URL = "sqlite:///data/enhanced_rag.db"
 ```
+
+Para deploy no Railway:
+1. Conecte o repositório GitHub ao Railway
+2. Configure `OPENAI_API_KEY` no Dashboard
+3. Deploy automático será executado
 
 ### ⚙️ Variáveis de Ambiente Necessárias
 
@@ -256,7 +265,7 @@ RAG_DATABASE_PATH=data/enhanced_rag.db
 - ✅ Código fonte atualizado
 - ✅ Banco RAG com 915 chunks
 - ✅ 26 protocolos Pedlife
-- ✅ Configuração Render
+- ✅ Configuração Railway
 - ✅ Variáveis de ambiente
 - ✅ Testes de integração
 
